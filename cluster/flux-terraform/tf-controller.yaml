@@ -1,0 +1,47 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: fluxcd-tf-controller-values
+  namespace: fluxcd-tf-packageinstalls
+type: Opaque
+stringData:
+  inline-values: |
+    replicaCount: 1
+    concurrency: 24
+    resources:
+      limits:
+        cpu: 1000m
+        memory: 2Gi
+      requests:
+        cpu: 400m
+        memory: 64Mi
+    caCertValidityDuration: 24h
+    certRotationCheckFrequency: 30m
+    image:
+      tag: v0.13.1
+    runner:
+      image:
+        tag: v0.13.1
+    awsPackage:
+      install: false
+---
+apiVersion: kappctrl.k14s.io/v1alpha1
+kind: App
+metadata:
+  name: fluxcd-tf-controller
+  namespace: fluxcd-tf-packageinstalls
+spec:
+  serviceAccountName: flux-installs
+  fetch:
+  - helmChart:
+      name: tf-controller
+      repository:
+        url: https://weaveworks.github.io/tf-controller/
+  template:
+  - helmTemplate:
+      namespace: tanzu-tf-controller
+      valuesFrom:
+      - secretRef:
+          name: fluxcd-tf-controller-values
+  deploy:
+  - kapp: {}

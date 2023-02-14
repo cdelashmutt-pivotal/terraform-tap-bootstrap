@@ -1,0 +1,81 @@
+#@ load("@ytt:data", "data")
+---
+apiVersion: packaging.carvel.dev/v1alpha1
+kind: PackageInstall
+metadata:
+  annotations:
+    kapp.k14s.io/change-group: tap
+    kapp.k14s.io/change-rule.serviceaccount-del: "delete before deleting tap-serviceaccount"
+    kapp.k14s.io/change-rule.external-dns-del: "delete before deleting external-dns"
+    kapp.k14s.io/change-rule.external-dns-upsert: "upsert after upserting external-dns"
+  name: tap
+  namespace: tap-install
+spec:
+  packageRef:
+    refName: tap.tanzu.vmware.com
+    versionSelection:
+      constraints: ">=1.4.0 <1.5.0"
+      prereleases: {}
+  serviceAccountName: tap-package-install-sa
+  values:
+  - secretRef:
+      name: tap-values
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: tap-values
+  namespace: tap-install
+stringData:
+  #@yaml/text-templated-strings
+  tap-values.yaml: |
+    profile: view
+    ceip_policy_disclosed: true
+
+    shared:
+      ingress_domain: "(@= data.values.domain @)"
+
+    contour:
+      envoy:
+        service:
+          annotations:
+            external-dns.alpha.kubernetes.io/hostname: "*.(@= data.values.domain @)."
+
+    tap_gui:
+      service_type: ClusterIP
+      ingressEnabled: true
+      app_config:
+        organization:
+          name: VMware
+        auth:
+          environment: development
+          providers:
+            github:
+              development:
+                clientId: (@= data.values.git_client_id @)
+                clientSecret: (@= data.values.git_client_secret @)
+        integrations:
+          github:
+          - host: github.com
+        catalog:
+          locations:
+          - type: url
+            target: https://github.com/cdelashmutt-pivotal/central-gitops/blob/main/catalog/catalog-info.yaml
+        kubernetes:
+          serviceLocatorMethod:
+            type: 'multiTenant'
+        techdocs:
+          builder: external
+          publisher:
+            azureBlobStorage:
+              containerName: example
+              credentials:
+                accountKey: (@= data.values.azure_storage_account_key @)
+                accountName: nvtechdocs
+            type: azureBlobStorage
+
+    appliveview:
+      ingressEnabled: true
+
+    tap_telemetry:
+      installed_for_vmware_internal_use: "true"

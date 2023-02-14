@@ -1,0 +1,15 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: getting-started
+  description: Here is where you can learn how to get started with the portal
+  tags:
+    - v1alpha1
+  annotations:
+    'backstage.io/kubernetes-label-selector': 'app=backstage'
+    'backstage.io/techdocs-ref': dir:.
+spec:
+  type: website
+  lifecycle: production
+  owner: default-team
+  system: tap-gui

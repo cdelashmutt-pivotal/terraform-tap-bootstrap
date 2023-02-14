@@ -1,0 +1,42 @@
+apiVersion: kapp.k14s.io/v1alpha1
+kind: Config
+minimumRequiredVersion: 0.23.0
+waitRules:
+- supportsObservedGeneration: true
+  conditionMatchers:
+  - type: ReconcileFailed
+    status: "True"
+    failure: true
+  - type: ReconcileSucceeded
+    status: "True"
+    success: true
+  resourceMatchers:
+  - apiVersionKindMatcher: {apiVersion: packaging.carvel.dev/v1alpha1, kind: PackageInstall}
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: helm-controller
+  namespace: fluxcd-tf-packageinstalls
+type: Opaque
+stringData:
+  inline-values: |
+    {"namespace":"tanzu-helm-controller"}
+---
+apiVersion: packaging.carvel.dev/v1alpha1
+kind: PackageInstall
+metadata:
+  name: helm-controller
+  namespace: fluxcd-tf-packageinstalls
+  annotations:
+    kapp.k14s.io/change-rule.serviceaccount-del: "delete before deleting flux-serviceaccount"
+spec:
+  packageRef:
+    refName: fluxcd-helm-controller.tanzu.vmware.com
+    versionSelection:
+      constraints: ">=0.21.0 <0.22.0"
+  serviceAccountName: flux-installs
+  values:
+  - secretRef:
+      key: inline-values
+      name: helm-controller 

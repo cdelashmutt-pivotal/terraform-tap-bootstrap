@@ -1,0 +1,7 @@
+site_name: 'Getting Started'
+
+nav:
+  - The Component: index.md
+
+plugins:
+  - techdocs-core

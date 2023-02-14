@@ -1,0 +1,19 @@
+apiVersion: kappctrl.k14s.io/v1alpha1
+kind: App
+metadata:
+  name: tap-accelerators
+  namespace: tap-accelerators
+  annotations:
+    kapp.k14s.io/change-rule.serviceaccount-del: "delete before deleting tap-accelerators-serviceaccount"
+    kapp.k14s.io/change-rule.external-dns-upsert: "upsert after upserting tap"
+spec:
+  serviceAccountName: tap-accelerators
+  fetch:
+  - git:
+      url: https://github.com/cdelashmutt-pivotal/central-gitops
+      ref: origin/main
+      subPath: accelerators
+  template:
+  - ytt: {}
+  deploy:
+  - kapp: {}

@@ -1,0 +1,14 @@
+apiVersion: accelerator.apps.tanzu.vmware.com/v1alpha1
+kind: Accelerator
+metadata:
+  name: terraform-accelerator
+  namespace: accelerator-system
+  annotations: 
+    kapp.k14s.io/change-rule.tap: "upsert after upserting tap"
+spec:
+  git:
+    gitImplementation: go-git
+    interval: 2m0s
+    ref:
+      branch: main
+    url: https://github.com/cdelashmutt-pivotal/terraform-accelerator.git

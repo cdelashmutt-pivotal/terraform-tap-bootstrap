@@ -1,0 +1,11 @@
+apiVersion: accelerator.apps.tanzu.vmware.com/v1alpha1
+kind: Accelerator
+metadata:
+  name: supply-chain-accelerator
+  namespace: accelerator-system
+spec:
+  git:
+    gitImplementation: go-git
+    ref:
+      branch: main
+    url: https://github.com/garethjevans/supply-chain-accelerator
