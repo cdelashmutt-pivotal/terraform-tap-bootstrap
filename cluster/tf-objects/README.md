@@ -1,0 +1,1 @@
+Place your Terraform object manifests for the FluxCD Terraform Operator for your other clusters in this directory.

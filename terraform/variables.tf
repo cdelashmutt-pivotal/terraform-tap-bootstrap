@@ -24,12 +24,12 @@ variable "git_client_secret" {
 
 variable "gitops_repo_url" {
   type = string
-  default = "https://github.com/cdelashmutt-pivotal/central-gitops"
+  default = "https://github.com/cdelashmutt-pivotal/terraform-tap-bootstrap"
 }
 
-variable "gitops_repo_ref" {
+variable "gitops_repo_branch" {
   type = string
-  default = "origin/main"
+  default = "main"
 }
 
 variable "gitops_repo_subPath" {

@@ -33,6 +33,11 @@ resource "kubernetes_secret" "cluster-install-secrets" {
       git_client_secret: ${var.git_client_secret}
       azure_storage_account_key: ${azurerm_storage_account.tap.primary_access_key}
       domain: ${var.project_name}.${data.azurerm_dns_zone.dns.name}
+      gitops:
+        repo: ${var.gitops_repo_url}
+        ref: origin/${var.gitops_repo_branch}
+        branch: ${var.gitops_repo_branch}
+        subPath: ${var.gitops_repo_subPath}
       azure:
         tenant_id: ${data.azurerm_client_config.current.tenant_id}
         subscription_id: ${data.azurerm_client_config.current.subscription_id}
@@ -63,7 +68,7 @@ resource "kubectl_manifest" "kapp-gitops-app" {
       fetch:
       - git:
           url: ${var.gitops_repo_url}
-          ref: ${var.gitops_repo_ref}
+          ref: origin/${var.gitops_repo_branch}
           subPath: ${var.gitops_repo_subPath}
       template:
       - ytt:

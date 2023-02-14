@@ -60,7 +60,7 @@ stringData:
         catalog:
           locations:
           - type: url
-            target: https://github.com/cdelashmutt-pivotal/central-gitops/blob/main/catalog/catalog-info.yaml
+            target: (@= data.values.gitops.repo @)/blob/(@= data.values.gitops.branch @)/catalog/catalog-info.yaml
         kubernetes:
           serviceLocatorMethod:
             type: 'multiTenant'

@@ -1,3 +1,6 @@
+#@ load("@ytt:data", "data")
+
+---
 apiVersion: kappctrl.k14s.io/v1alpha1
 kind: App
 metadata:
@@ -10,8 +13,8 @@ spec:
   serviceAccountName: tap-accelerators
   fetch:
   - git:
-      url: https://github.com/cdelashmutt-pivotal/central-gitops
-      ref: origin/main
+      url: (@= data.values.gitops.repo @)
+      ref: (@= data.values.gitops.ref @)
       subPath: accelerators
   template:
   - ytt: {}
