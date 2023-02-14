@@ -34,7 +34,6 @@ stringData:
         - --source=service
         - --source=ingress
         - --source=contour-httpproxy
-        - --source=contour-ingressroute
         - --provider=azure
         - --policy=sync
         - --registry=txt
