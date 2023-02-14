@@ -14,7 +14,7 @@ terraform {
     }
     tanzu-mission-control = {
       source = "vmware/tanzu-mission-control"
-      version = ">= 1.1.4"
+      version = ">= 1.1.5"
     }
     azuread = {
       source  = "hashicorp/azuread"
