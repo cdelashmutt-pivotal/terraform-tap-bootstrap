@@ -13,8 +13,8 @@ spec:
   serviceAccountName: tap-accelerators
   fetch:
   - git:
-      url: (@= data.values.gitops.repo @)
-      ref: (@= data.values.gitops.ref @)
+      url: #@ data.values.gitops.repo
+      ref: #@ data.values.gitops.ref
       subPath: accelerators
   template:
   - ytt: {}
