@@ -32,7 +32,7 @@ resource "kubernetes_secret" "cluster-install-secrets" {
       git_client_id: ${var.git_client_id}
       git_client_secret: ${var.git_client_secret}
       azure_storage_account_key: ${azurerm_storage_account.tap.primary_access_key}
-      domain: ${var.project_name}.${data.azurerm_dns_zone.dns.name}
+      domain: ${azurerm_dns_zone.dns.name}
       gitops:
         repo: ${var.gitops_repo_url}
         ref: origin/${var.gitops_repo_branch}
@@ -42,7 +42,7 @@ resource "kubernetes_secret" "cluster-install-secrets" {
         tenant_id: ${data.azurerm_client_config.current.tenant_id}
         subscription_id: ${data.azurerm_client_config.current.subscription_id}
         external_dns:
-          resource_group: ${data.azurerm_resource_group.dns.name}
+          resource_group: ${azurerm_resource_group.default.name}
           client_id: ${azuread_application.external_dns.application_id}
           client_secret: ${azuread_application_password.external_dns.value}
     EOF

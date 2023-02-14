@@ -32,6 +32,8 @@ stringData:
     deployment:
         args:
         - --source=service
+        - --source=ingress
+        - --source=httpproxy
         - --provider=azure
         - --policy=sync
         - --registry=txt

@@ -1,12 +1,24 @@
 # Query the current master zone
-data "azurerm_dns_zone" "dns" {
-  #TODO: Hardcoded
-  name = "azure.grogscave.net"
+data "azurerm_resource_group" "parent" {
+  name = var.dns_parent_zone_rg
+}
+data "azurerm_dns_zone" "parent" {
+  name = var.dns_parent_zone_name
 }
 
-data "azurerm_resource_group" "dns" {
-  #TODO: Hardcoded
-  name = "dns"
+resource "azurerm_dns_zone" "dns" {
+  name                = "${var.project_name}.${data.azurerm_dns_zone.parent.name}"
+  resource_group_name = azurerm_resource_group.default.name
+}
+
+# create ns record for sub-zone in parent zone
+resource "azurerm_dns_ns_record" "dns" {
+  name                = var.project_name
+  zone_name           = data.azurerm_dns_zone.parent.name
+  resource_group_name = data.azurerm_dns_zone.parent.resource_group_name
+  ttl                 = 60
+
+  records = azurerm_dns_zone.dns.name_servers
 }
 
 resource "azuread_application" "external_dns" {
@@ -24,13 +36,13 @@ resource "azuread_service_principal" "external_dns" {
 }
 
 resource "azurerm_role_assignment" "resource_group_reader" {
-  scope                = data.azurerm_resource_group.dns.id
+  scope                = azurerm_resource_group.default.id
   role_definition_name = "Reader"
   principal_id         = azuread_service_principal.external_dns.id
 }
 
 resource "azurerm_role_assignment" "dns_contributer" {
-  scope                = data.azurerm_dns_zone.dns.id
+  scope                = azurerm_dns_zone.dns.id
   role_definition_name = "DNS Zone Contributor"
   principal_id         = azuread_service_principal.external_dns.id
 }

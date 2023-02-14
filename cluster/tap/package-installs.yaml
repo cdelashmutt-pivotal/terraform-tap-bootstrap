@@ -35,12 +35,6 @@ stringData:
     shared:
       ingress_domain: "(@= data.values.domain @)"
 
-    contour:
-      envoy:
-        service:
-          annotations:
-            external-dns.alpha.kubernetes.io/hostname: "*.(@= data.values.domain @)."
-
     tap_gui:
       service_type: ClusterIP
       ingressEnabled: true
