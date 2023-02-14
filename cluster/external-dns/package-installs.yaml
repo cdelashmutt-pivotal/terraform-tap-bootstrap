@@ -33,7 +33,8 @@ stringData:
         args:
         - --source=service
         - --source=ingress
-        - --source=httpproxy
+        - --source=contour-httpproxy
+        - --source=contour-ingressroute
         - --provider=azure
         - --policy=sync
         - --registry=txt
