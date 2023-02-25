@@ -10,5 +10,5 @@ spec:
     gitImplementation: go-git
     interval: 2m0s
     ref:
-      branch: main
+      branch: dev
     url: https://github.com/cdelashmutt-pivotal/terraform-accelerator.git
