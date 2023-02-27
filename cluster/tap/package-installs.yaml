@@ -62,10 +62,10 @@ stringData:
           builder: external
           publisher:
             azureBlobStorage:
-              containerName: example
+              containerName: (@= data.values.azure.storage_account.container @)
               credentials:
-                accountKey: (@= data.values.azure_storage_account_key @)
-                accountName: nvtechdocs
+                accountKey: (@= data.values.azure.storage_account.account_key @)
+                accountName: (@= data.values.azure.storage_account.name @)
             type: azureBlobStorage
 
     appliveview:

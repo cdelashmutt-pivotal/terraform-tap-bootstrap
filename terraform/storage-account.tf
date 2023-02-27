@@ -9,3 +9,9 @@ resource "azurerm_storage_account" "tap" {
   account_tier             = "Standard"
   account_replication_type = "LRS"
 }
+
+resource "azurerm_storage_container" "techdocs" {
+  name                  = "techdocs"
+  storage_account_name  = azurerm_storage_account.tap.name
+  container_access_type = "private"
+}

@@ -11,6 +11,12 @@ output "az_cluster_creds_command" {
   value = "az aks get-credentials --resource-group ${azurerm_resource_group.default.name} --name ${azurerm_kubernetes_cluster.default.name} --admin"
 }
 
+output "publish_techdocs" {
+  description = "Command to publish techdocs"
+  value = "npx @techdocs/cli publish --publisher-type azureBlobStorage --storage-name ${azurerm_storage_container.techdocs.name} --entity default/component/tap-gui-component --directory /tmp/tap-gui --azureAccountName ${azurerm_storage_account.tap.name} --azureAccountKey ${azurerm_storage_account.tap.primary_access_key}"
+  sensitive = true
+}
+
 # output "host" {
 #   value = azurerm_kubernetes_cluster.default.kube_config.0.host
 # }
