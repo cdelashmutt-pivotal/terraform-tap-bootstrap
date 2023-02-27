@@ -34,6 +34,7 @@ stringData:
 
     shared:
       ingress_domain: "(@= data.values.domain @)"
+      ingress_issuer: letsencrypt-contour-cluster-issuer
 
     tap_gui:
       service_type: ClusterIP

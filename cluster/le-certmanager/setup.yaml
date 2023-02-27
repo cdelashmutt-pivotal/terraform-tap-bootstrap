@@ -1,0 +1,47 @@
+---
+apiVersion: packaging.carvel.dev/v1alpha1
+kind: PackageRepository
+metadata:
+  name: cdelashmutt-pivotal-repository
+  namespace: gitops
+spec:
+  fetch:
+    imgpkgBundle:
+      image: ghcr.io/cdelashmutt-pivotal/packagerepo:1.0.0
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: le-certmanager-package-install-cluster-admin-role
+  annotations: 
+    kapp.k14s.io/change-group: le-certmanager-serviceaccount
+rules:
+- apiGroups:
+  - '*'
+  resources:
+  - '*'
+  verbs:
+  - '*'
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: le-certmanager-packge-install-cluster-admin-role-binding
+  annotations: 
+    kapp.k14s.io/change-group: le-certmanager-serviceaccount
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: le-certmanager-package-install-cluster-admin-role
+subjects:
+- kind: ServiceAccount
+  name: le-certmanager-package-install-sa
+  namespace: gitops
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: le-certmanager-package-install-sa
+  namespace: gitops
+  annotations: 
+    kapp.k14s.io/change-group: le-certmanager-serviceaccount

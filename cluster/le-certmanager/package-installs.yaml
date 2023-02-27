@@ -1,0 +1,38 @@
+#@ load("@ytt:data", "data")
+---
+apiVersion: packaging.carvel.dev/v1alpha1
+kind: PackageInstall
+metadata:
+  annotations:
+    kapp.k14s.io/change-group: le-certmanager
+    kapp.k14s.io/change-rule.serviceaccount-del: "delete before deleting le-certmanager-serviceaccount"
+  name: le-certmanager
+  namespace: gitops
+spec:
+  packageRef:
+    refName: le-certmanager.vmware.com
+    versionSelection:
+      constraints: "2.0.0"
+      prereleases: {}
+  serviceAccountName: le-certmanager-package-install-sa
+  values:
+  - secretRef:
+      name: le-certmanager-values
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: le-certmanager-values
+  namespace: gitops
+stringData:
+  #@yaml/text-templated-strings
+  values.yaml: |
+    azure:
+      environment: AzurePublicCloud
+      subscriptionId: (@= data.values.azure.subscription_id @)
+      tenantId: (@= data.values.azure.tenant_id @)
+      dnsResourceGroupName: (@= data.values.azure.external_dns.resource_group @)
+      dnsZoneName: (@= data.values.domain @)
+      credentials:
+        appId: (@= data.values.azure.external_dns.client_id @)
+        appPassword: (@= data.values.azure.external_dns.client_secret @)
