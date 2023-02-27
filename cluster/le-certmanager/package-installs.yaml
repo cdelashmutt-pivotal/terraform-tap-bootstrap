@@ -27,6 +27,8 @@ metadata:
 stringData:
   #@yaml/text-templated-strings
   values.yaml: |
+    acme:
+      email: cdelashmutt@vmware.com
     azure:
       environment: AzurePublicCloud
       subscriptionId: (@= data.values.azure.subscription_id @)
