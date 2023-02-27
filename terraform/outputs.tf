@@ -17,6 +17,19 @@ output "publish_techdocs" {
   sensitive = true
 }
 
+output "storage_account" {
+  value = azurerm_storage_account.tap.name
+}
+
+output "storage_account_container" {
+  value = azurerm_storage_container.techdocs.name
+}
+
+output "storage_account_key" {
+  value = azurerm_storage_account.tap.primary_access_key
+  sensitive = true
+}
+
 # output "host" {
 #   value = azurerm_kubernetes_cluster.default.kube_config.0.host
 # }
