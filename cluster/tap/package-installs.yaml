@@ -29,7 +29,33 @@ metadata:
 stringData:
   #@yaml/text-templated-strings
   tap-values.yaml: |
-    profile: view
+    profile: full
+    excluded_packages:
+    - apis.apps.tanzu.vmware.com
+    - buildservice.tanzu.vmware.com
+    - carbonblack.scanning.apps.tanzu.vmware.com
+    - cnrs.tanzu.vmware.com
+    - connector.appliveview.tanzu.vmware.com
+    - controller.conventions.apps.tanzu.vmware.com
+    - controller.source.apps.tanzu.vmware.com
+    - conventions.appliveview.tanzu.vmware.com
+    - developer-conventions.tanzu.vmware.com
+    - eventing.tanzu.vmware.com
+    - grype.scanning.apps.tanzu.vmware.com
+    - ootb-delivery-basic.tanzu.vmware.com
+    - ootb-supply-chain-basic.tanzu.vmware.com
+    - ootb-supply-chain-testing-scanning.tanzu.vmware.com
+    - ootb-supply-chain-testing.tanzu.vmware.com
+    - policy.apps.tanzu.vmware.com
+    - scanning.apps.tanzu.vmware.com
+    - service-bindings.labs.vmware.com
+    - services-toolkit.tanzu.vmware.com
+    - snyk.scanning.apps.tanzu.vmware.com
+    - spring-boot-conventions.tanzu.vmware.com
+    - sso.apps.tanzu.vmware.com
+    - tap-auth.tanzu.vmware.com
+    - workshops.learningcenter.tanzu.vmware.com
+
     ceip_policy_disclosed: true
 
     shared:
