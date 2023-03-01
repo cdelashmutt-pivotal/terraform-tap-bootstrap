@@ -118,4 +118,6 @@ stringData:
           url: git@github.com:cdelashmutt-pivotal/test-private.git
           ref: origin/main
           subPath: overlays
+          secretRef:
+            name: git-ssh2
         path: _ytt_lib/customize
